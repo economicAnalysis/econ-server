@@ -74,7 +74,6 @@ def get_fred(id_str):
 def write_pce_avghr(pce_yoy_d,avghr_yoy_d,pce_dates):
     """code to generate the series and """
 
- 
 
     pce_avghr_series = [{'average_hour_value': avghr_yoy_d[date], \
                    'pce_value': pce_yoy_d[date], \
@@ -88,87 +87,83 @@ def write_pce_avghr(pce_yoy_d,avghr_yoy_d,pce_dates):
     # database economic_data
     db = client.economic_data
     # economic 
+    document = db.economic_series_by_date.find_one({'date':date_value})
+  
+    # write_pce_avghr runs first and should create the document if the document
+    # hasn't already been created and insert the document if the documents
+    # hasn't already been inserted
+    if not document and 'pce_avghr' not in document:
+      economic_series_by_date.insert(economic_series_for_date)
+
+
+def write_pce_govrt(pce_yoy_d,govrt_yoy_d,pce_dates):
+    """code to call the matplotlib libraries and generate charts"""
+    
+ 
+    pce_government_rate_series = [{'govrt_rate_value': govrt_yoy_d[date], \
+               'pce_value': pce_yoy_d[date], \
+               'date': date} \
+               for date in pce_dates[14:]]
+
+    date_value = time.strftime("%m_%Y")
+
+    # database economic_data
+    db = client.economic_data
+    # economic 
     economic_series_by_date = db.economic_series_by_date
-    economic_series_by_date.insert(economic_series_for_date)
-
-
-
-
-def make_pce_govrt(pce_yoy_d,govrt_yoy_d,pce_dates):
-    """code to call the matplotlib libraries and generate charts"""
+    document = economic_series_by_date.find_one({'date': date_value})
+    if 'pce_government_rate' not in document:
+      document['pce_government_rate'] = pce_government_rate_series 
+      economic_series_by_date.save(document)
     
-    pce_val = [pce_yoy_d[date] for date in pce_dates[14:]]
-    pce_axis = [datetime.datetime.strptime(date,"%Y-%m-%d") for date in pce_dates[14:]]
-    govrt_val = [govrt_yoy_d[date] for date in pce_dates[14:]]
-
-    fig = plt.figure()
-    ax1 = fig.add_subplot(111)
-
-    ax2 = ax1.twinx()
-    ax2.invert_yaxis()
-    ax2.set_ylim(3,-5)
-    pce_line = ax1.plot(pce_axis,pce_val,color='k',label="YoY change in Real PCE")
-    govrt_line = ax2.plot(pce_axis,govrt_val,color='r',lw=2,label="YoY change in Fed Funds Rate")
     
-    ax1.grid(axis="both")
-    ax1.legend(loc="upper center",bbox_to_anchor=(0.5,1.2))
-    ax2.legend(loc="upper center",bbox_to_anchor=(0.5,1.12))
-    
-    box = ax1.get_position()
-    ax1.set_position([box.x0,box.y0,box.width,box.height*0.8])
-    box2 = ax2.get_position()
-    ax2.set_position([box2.x0,box2.y0,box2.width,box2.height*0.8])
-    plt.title("Fed Funds Rate leading indicator of change in Real PCE",y=1.175)
+def write_avghr(avghr_yoy_d,navghr_yoy_d,pcedef_yoy_d,avghr_dates):
+    """generates nominal versus deflated average hour data"""
+ 
+    nominal_vs_deflated_avghr_series = [{'deflated_avghr_value': avghr_yoy_d[date], \
+               'nominal_avghr_value': navghr_yoy_d[date], \
+               'pce_deflator_value': pcedef_yoy_d[date], \
+               'date': date} \
+               for date in avghr_dates[14:]]
 
-    plt.show()
-    
-def make_avghr(avghr_yoy_d,navghr_yoy_d,pcedef_yoy_d,avghr_dates):
-    """code to call the matplotlib libraries and generate charts"""
-    
-    davghr_val = [avghr_yoy_d[date] for date in avghr_dates[14:]]
-    navghr_val = [navghr_yoy_d[date] for date in avghr_dates[14:]]
-    pcedef_val = [pcedef_yoy_d[date] for date in avghr_dates[14:]]
-    x_axis = [datetime.datetime.strptime(date,"%Y-%m-%d") for date in avghr_dates[14:]]
+    date_value = time.strftime("%m_%Y")
 
-    fig = plt.figure()
-    ax = plt.subplot(111)
+    db = client.economic_data
+    # get the economic_series_by_date collection
+    # 
+    economic_series_by_date = db.economic_series_by_date
+    document = economic_series_by_date.find_one({'date': date_value})
+    #if 'deflated_vs_nominal_avghr' not in document:
+    if 'deflated_vs_nominal_avghr' not in document:
+      document['deflated_vs_nominal_avghr'] = nominal_vs_deflated_avghr_series 
+      economic_series_by_date.save(document)
 
-    navghr_line = ax.plot(x_axis,navghr_val,color='b',lw=2,label="YoY change in Nominal Average Hourly Earnings")
-    davghr_line = ax.plot(x_axis,davghr_val,color='r',lw=2,label="YoY change in Real Average Hourly Earnings")
-    pce_line = ax.plot(x_axis,pcedef_val,color='k',label="YoY change in PCE Deflator")
-    
-    ax.grid(axis="both")
-    ax.legend(loc="upper center",bbox_to_anchor=(0.5,1.275))
-    box = ax.get_position()
-    ax.set_position([box.x0,box.y0,box.width,box.height*0.8])
-    plt.title("How Inflation Effects Real Avg. Hourly Earnings",y=1.25)
-    
-    plt.show()    
 
-def make_dscrt(pcedef_yoy_d,govrt_d,plot_dates):
+    
+
+def write_dscrt(pcedef_yoy_d,govrt_d,plot_dates):
     """code to call the matplotlib libraries and generate charts"""
     
     pcedef_val = [pcedef_yoy_d[date] for date in plot_dates]
     govrt_val = [govrt_d[date] for date in plot_dates]
     x_axis = [datetime.datetime.strptime(date,"%Y-%m-%d") for date in plot_dates]
 
-    fig = plt.figure()
-    ax1 = plt.subplot(111)
-    ax2 = ax1.twinx()
+    federal_funds_vs_pce_deflator_series = [{'pce_deflator_value': pcedef_yoy_d[date], \
+     'govrt_rate_value': govrt_d[date], \
+     'date': date} \
+     for date in plot_dates[14:]]
 
-    pcedef_line = ax1.plot(x_axis,pcedef_val,color='r',lw=2,label="YoY change in PCE deflator (3 month average)")
-    govrt_line = ax2.plot(x_axis,govrt_val,color='k',lw=2,label="Federal Fund (Discount Rate prior to 2000)")
-    
-    ax1.grid(axis="both")
-    ax1.legend(loc="upper center",bbox_to_anchor=(0.5,1.22))
-    ax2.legend(loc="upper center",bbox_to_anchor=(0.5,1.12))
-    box = ax1.get_position()
-    ax1.set_position([box.x0,box.y0,box.width,box.height*0.8])
-    ax2.set_position([box.x0,box.y0,box.width,box.height*0.8])
-    plt.title("Inflation Drives Interest Rates",y=1.25)
+    date_value = time.strftime("%m_%Y")
 
-    plt.show()    
-
+    db = client.economic_data
+    # get the economic_series_by_date collection
+    # 
+    economic_series_by_date = db.economic_series_by_date
+    document = economic_series_by_date.find_one({'date': date_value})
+    #if 'deflated_vs_nominal_avghr' not in document:
+    if 'federal_funds_vs_pce_deflator' not in document:
+      document['federal_funds_vs_pce_deflator'] = federal_funds_vs_pce_deflator_series 
+      economic_series_by_date.save(document)
 
 def make_unrate(pce_yoy_d,unrate_d,pce_dates):
     """code to call the matplotlib libraries and generate charts"""
@@ -434,9 +429,9 @@ def main_routine():
 
         
     write_pce_avghr(pce_yoy_d,avghr_yoy_d,pce_dates)
-    # write_pce_govrt(pce_yoy_d,govrt_yoy_d,pce_dates)
-    # write_avghr(avghr_yoy_d,navghr_yoy_d,pcedef_yoy_d,avghr_dates)
-    # write_dscrt(pcedef_yoy_d,govrt_d,pcedef_govrt_dates)        
+    write_pce_govrt(pce_yoy_d,govrt_yoy_d,pce_dates)
+    write_avghr(avghr_yoy_d,navghr_yoy_d,pcedef_yoy_d,avghr_dates)
+    write_dscrt(pcedef_yoy_d,govrt_d,pcedef_govrt_dates)        
     # write_unrate(pce_yoy_d,unrate_d,pce_dates)
     # write_emply(pce_yoy_d,emply_yoy_d,pce_dates)
     # write_dmdebt(dmdebt_yoy_d,trsy_10yr_d,dmdebt_dates)
