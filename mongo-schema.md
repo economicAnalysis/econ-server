@@ -19,4 +19,4 @@
 * month\_year
 
 ###### observation\_dates
-* Year: {month: [1,2,...,12]}
+* Year: {months: [1,2,...,12]}
