@@ -25,12 +25,23 @@ var getData = function (request, response) {
 
 };
 
+var getDates = function (request, response) {
 
+  var collection = db.collection('observation_dates');
+  
+  // If month and year are present use month and year
+  var stream = collection.find().sort({ _id: -1}).limit(1).stream();
+  stream.on('data', function (item){
+    response.status(200).send(item);
+  });
+
+};
 
 module.exports = function (server) {
 
-  //
   server.get('/:year/:month', getData);
+
+  server.get('/dates', getDates);
   
   server.get('/', getData);
 

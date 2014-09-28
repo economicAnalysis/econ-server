@@ -82,7 +82,7 @@ def write_pce_avghr(pce_yoy_d,avghr_yoy_d,pce_dates):
 
     month_year_value = time.strftime("%m_%Y")
     year_value = time.strftime("%Y")
-    month_value = time.strftime("%m")
+    month_value = time.strftime("%m").lstrip("0").replace(" 0", "")
 
     economic_series_for_date = {'month_year': month_year_value, 'pce_avghr': pce_avghr_series}
 
@@ -95,20 +95,21 @@ def write_pce_avghr(pce_yoy_d,avghr_yoy_d,pce_dates):
     # hasn't already been created and insert the document if the documents
     # hasn't already been inserted
     if not document or 'pce_avghr' not in document:
-      economic_series_by_date.insert(economic_series_for_date)
+      db.economic_series_by_date.insert(economic_series_for_date)
 
 
-    date_document = db.observation_dates.find_one({'year':year_value})
-    if not date_document or year_value not in date_document:
+    date_document = db.observation_dates.find_one()
+    if not date_document:
       date_document = {
-        'year': year_value,
-        'months': {month_value: True}
+        year_value: {month_value: True}
       }
-      db.observation_dates.insert(date_document)
-    else:
-      if month_value not in date_document['months']:
-        date_document['months'][month_value] = True
-        db.observation_dates.save(date_document)
+      db.observation_dates.insert(date_document) 
+    elif year_value not in date_document:
+      date_document[year_value] = {month_value: True}
+      db.observation_dates.save(date_document)
+    elif month_value not in date_document[year_value]:
+      date_document[year_value][month_value] = True
+      db.observation_dates.save(date_document)
 
 
 def write_pce_govrt(pce_yoy_d,govrt_yoy_d,pce_dates):
@@ -117,7 +118,7 @@ def write_pce_govrt(pce_yoy_d,govrt_yoy_d,pce_dates):
  
     pce_government_rate_series = [{'govrt_rate_value': govrt_yoy_d[date], \
                'pce_value': pce_yoy_d[date], \
-               'month_year': date} \
+               'date': date} \
                for date in pce_dates[14:]]
 
     date_value = time.strftime("%m_%Y")
@@ -138,7 +139,7 @@ def write_avghr(avghr_yoy_d,navghr_yoy_d,pcedef_yoy_d,avghr_dates):
     nominal_vs_deflated_avghr_series = [{'deflated_avghr_value': avghr_yoy_d[date], \
                'nominal_avghr_value': navghr_yoy_d[date], \
                'pce_deflator_value': pcedef_yoy_d[date], \
-               'month_year': date} \
+               'date': date} \
                for date in avghr_dates[14:]]
 
     date_value = time.strftime("%m_%Y")
@@ -165,7 +166,7 @@ def write_dscrt(pcedef_yoy_d,govrt_d,plot_dates):
 
     federal_funds_vs_pce_deflator_series = [{'pce_deflator_value': pcedef_yoy_d[date], \
      'govrt_rate_value': govrt_d[date], \
-     'month_year': date} \
+     'date': date} \
      for date in plot_dates[14:]]
 
     date_value = time.strftime("%m_%Y")
@@ -185,7 +186,7 @@ def write_unemployment_rate(pce_yoy_d,unemployment_rate_d,pce_dates):
     
     unemployment_vs_pce_series = [{'pce_value': pce_yoy_d[date], \
      'unemployment_rate_value': unemployment_rate_d[date], \
-     'month_year': date} \
+     'date': date} \
      for date in pce_dates[14:]]
 
     date_value = time.strftime("%m_%Y")
@@ -207,7 +208,7 @@ def write_employment(pce_yoy_d,employment_yoy_d,pce_dates):
  
     employment_vs_pce_series = [{'pce_value': pce_yoy_d[date], \
      'employment_rate_value': employment_yoy_d[date], \
-     'month_year': date} \
+     'date': date} \
      for date in pce_dates[14:]]
 
     date_value = time.strftime("%m_%Y")
@@ -229,7 +230,7 @@ def write_domestic_debt(domestic_debt_yoy_d,treasury_10yr_d,domestic_debt_dates)
   
     domestic_debt_vs_treasury_series = [{'domestic_debt_value': domestic_debt_yoy_d[date], \
      'treasury_10yr_value': treasury_10yr_d[date], \
-     'month_year': date} \
+     'date': date} \
      for date in domestic_debt_dates[5:]]
 
     date_value = time.strftime("%m_%Y")
@@ -250,7 +251,7 @@ def write_prime(domestic_debt_yoy_d,prime_d,domestic_debt_dates):
  
     domestic_debt_vs_prime_series = [{'domestic_debt_value': domestic_debt_yoy_d[date], \
      'prime_rate_value': prime_d[date], \
-     'month_year': date} \
+     'date': date} \
      for date in domestic_debt_dates[5:]]
 
     date_value = time.strftime("%m_%Y")
