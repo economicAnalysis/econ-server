@@ -18,3 +18,9 @@ data is stored in the format
    },
    
  }
+
+
+####Useful information
+The server listens on port 5000
+
+the link command takes the form `--link name:alias`

@@ -18,8 +18,8 @@ RUN     mkdir /root/.ssh/
 
 # ADD <src> <dest>. <src> must be the path to a file or directory relative to the source directory being built
 # These are the keys that allow us to ssh into the container.
-ADD     econapp_id_rsa.pub /tmp/econapp_id_rsa.pub
-RUN     cat /tmp/econapp_id_rsa.pub >> /root/.ssh/authorized_keys && rm -f /tmp/econapp_id_rsa.pub
+ADD     econapp_docker_rsa.pub /tmp/econapp_docker_rsa.pub
+RUN     cat /tmp/econapp_docker_rsa.pub >> /root/.ssh/authorized_keys && rm -f /tmp/econapp_docker_rsa.pub
 
 ADD     ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
