@@ -43,9 +43,7 @@ module.exports = function (server) {
 
   server.get('/dates', getDates);
   
-  server.get('/', function (request, response){
-    response.send('hello out there');
-  });
+  server.get('/', getData);
 
   return server;
 
