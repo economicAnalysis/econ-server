@@ -4,6 +4,7 @@ echo "-----------src/ls*------------" >> RESULTS.log
 ssh root@localhost -p 50002 -i econapp_docker_rsa 'cd /src; ls' >> RESULTS.log
 echo "-----------src/ls*------------" >> RESULTS.log
 ssh root@localhost -p 50002 -i econapp_docker_rsa 'cat /src/test.txt' >> RESULTS.log
+=======
 echo "" >> RESULTS.log
 
 
