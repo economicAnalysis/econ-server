@@ -6,13 +6,12 @@ var mytest = require('./test');
 
 var port = 5000;
 
-mytest = mytest.test;
-mytest();
+mytest.test();
 
-db.open(function (error, mongoclient){
-  if(error){
-    throw 'Error opening database';
-  }
-  console.log('now listening on ', port);
-  server.listen(port);
-})
+// db.open(function (error, mongoclient){
+//   if(error){
+//     throw 'Error opening database';
+//   }
+//   console.log('now listening on ', port);
+//   server.listen(port);
+// })
