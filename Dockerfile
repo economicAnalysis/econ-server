@@ -18,6 +18,7 @@ RUN     mkdir /root/.ssh/
 # Dump the environmental variables
 RUN     mkdir -p /var/log/dump
 RUN     echo '---dump---' >> /var/log/dump/envdump
+RUN     env >> /var/log/dump/envdump
 
 # ADD <src> <dest>. <src> must be the path to a file or directory relative to the source directory being built
 # These are the keys that allow us to ssh into the container.
