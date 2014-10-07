@@ -15,12 +15,17 @@ RUN     mkdir -p /var/run/sshd
 RUN     mkdir -p /var/log/supervisor
 RUN     mkdir /root/.ssh/
 
+# Dump the environmental variables
+RUN     mkdir -p /var/log/dump
+RUN     echo '---dump---' >> /var/log/dump/envdump
+RUN     env >> /var/log/dump/envdump
 
 # ADD <src> <dest>. <src> must be the path to a file or directory relative to the source directory being built
 # These are the keys that allow us to ssh into the container.
 ADD     econapp_docker_rsa.pub /tmp/econapp_docker_rsa.pub
 RUN     cat /tmp/econapp_docker_rsa.pub >> /root/.ssh/authorized_keys && rm -f /tmp/econapp_docker_rsa.pub
 
+# Add the supervisord configuration file
 ADD     ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Load and install the app
