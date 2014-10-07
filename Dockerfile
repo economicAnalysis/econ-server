@@ -15,7 +15,6 @@ RUN     mkdir -p /var/run/sshd
 RUN     mkdir -p /var/log/supervisor
 RUN     mkdir /root/.ssh/
 
-
 # ADD <src> <dest>. <src> must be the path to a file or directory relative to the source directory being built
 # These are the keys that allow us to ssh into the container.
 ADD     econapp_docker_rsa.pub /tmp/econapp_docker_rsa.pub
