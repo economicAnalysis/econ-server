@@ -16,8 +16,8 @@ var test = function(){
 
   fs.writeFile('test.txt', 
                'time: ' + readableDate + 
-               'port: ' + process.env.DB_PORT + '\n' +
-               'port_27017: ' + process.env.DB_PORT_27017_TCP + '\n',
+               'port: ' + process.env.MONGODB_PORT + '\n' +
+               'port_27017: ' + process.env.MONGODB_PORT_27017_TCP + '\n',
                function(err){
                 console.log(err);
                });

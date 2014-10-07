@@ -3,6 +3,10 @@ FROM    ubuntu:14.04
 
 RUN     sudo apt-get update
 
+# Install python
+RUN     sudo apt-get install -y python python-dev python-pip python-virtualenv && rm -rf /var/lib/apt/lists/*
+RUN     sudo apt-get install -y python-pip
+
 # Install node and npm
 RUN     sudo apt-get install -y nodejs
 RUN     sudo ln -sf /usr/bin/nodejs /usr/local/bin/node
@@ -15,6 +19,11 @@ RUN     mkdir -p /var/run/sshd
 RUN     mkdir -p /var/log/supervisor
 RUN     mkdir /root/.ssh/
 
+# Dump the environmental variables
+RUN     mkdir -p /var/log/dump
+RUN     echo '---dump---' >> /var/log/dump/envdump
+RUN     env | grep _PORT >> /var/logdump/envdump
+
 # ADD <src> <dest>. <src> must be the path to a file or directory relative to the source directory being built
 # These are the keys that allow us to ssh into the container.
 ADD     econapp_docker_rsa.pub /tmp/econapp_docker_rsa.pub
@@ -25,6 +34,12 @@ ADD     ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Load and install the app
 ADD     . /src
 RUN     cd /src; npm install
+
+#
+RUN     cd /src/app
+RUN     pip install fred
+RUN     pip install pymongo
+
 
 # Expose node and ssh
 EXPOSE  5000 22 8081

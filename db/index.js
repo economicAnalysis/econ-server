@@ -5,7 +5,7 @@ var dbServer = require('mongodb').Server;
 
 // At this point we have not connected to mongo.
 // mongoclient is an object that describes the connection to mongo
-var db = new Db('economic_data', new dbServer('localhost', 27017), 
+var db = new Db('economic_data', new dbServer('localhost', process.env.MONGODB_PORT_27017_TCP), 
                                   {'native_parser':true});
 
 

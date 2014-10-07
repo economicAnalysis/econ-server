@@ -1,14 +1,12 @@
 import fred
 import datetime
 import calendar
-import matplotlib
-import matplotlib.pyplot as plt
 import pprint
 import json
 from pymongo import MongoClient
 import time
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('localhost', process.env.MONGODB_PORT_27017_TCP)
 
 ###what we'll do is calculate all the lists and dictionaries once
 ###and then pass them to the relevant fucntions   
