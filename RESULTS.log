@@ -1,8 +1,64 @@
 -----------src/node-std*------------
-js-bson: Failed to load c++ bson extension, using pure JS version
-test triggered
-null
-now listening on  5000
+
+module.js:340
+    throw err;
+          ^
+Error: Cannot find module 'mongodb'
+    at Function.Module._resolveFilename (module.js:338:15)
+    at Function.Module._load (module.js:280:25)
+    at Module.require (module.js:364:17)
+    at require (module.js:380:17)
+    at Object.<anonymous> (/src/db/index.js:1:72)
+    at Module._compile (module.js:456:26)
+    at Object.Module._extensions..js (module.js:474:10)
+    at Module.load (module.js:356:32)
+    at Function.Module._load (module.js:312:12)
+    at Module.require (module.js:364:17)
+
+module.js:340
+    throw err;
+          ^
+Error: Cannot find module 'mongodb'
+    at Function.Module._resolveFilename (module.js:338:15)
+    at Function.Module._load (module.js:280:25)
+    at Module.require (module.js:364:17)
+    at require (module.js:380:17)
+    at Object.<anonymous> (/src/db/index.js:1:72)
+    at Module._compile (module.js:456:26)
+    at Object.Module._extensions..js (module.js:474:10)
+    at Module.load (module.js:356:32)
+    at Function.Module._load (module.js:312:12)
+    at Module.require (module.js:364:17)
+
+module.js:340
+    throw err;
+          ^
+Error: Cannot find module 'mongodb'
+    at Function.Module._resolveFilename (module.js:338:15)
+    at Function.Module._load (module.js:280:25)
+    at Module.require (module.js:364:17)
+    at require (module.js:380:17)
+    at Object.<anonymous> (/src/db/index.js:1:72)
+    at Module._compile (module.js:456:26)
+    at Object.Module._extensions..js (module.js:474:10)
+    at Module.load (module.js:356:32)
+    at Function.Module._load (module.js:312:12)
+    at Module.require (module.js:364:17)
+
+module.js:340
+    throw err;
+          ^
+Error: Cannot find module 'mongodb'
+    at Function.Module._resolveFilename (module.js:338:15)
+    at Function.Module._load (module.js:280:25)
+    at Module.require (module.js:364:17)
+    at require (module.js:380:17)
+    at Object.<anonymous> (/src/db/index.js:1:72)
+    at Module._compile (module.js:456:26)
+    at Object.Module._extensions..js (module.js:474:10)
+    at Module.load (module.js:356:32)
+    at Function.Module._load (module.js:312:12)
+    at Module.require (module.js:364:17)
 -----------src/ls*------------
 Dockerfile
 README.md
@@ -21,9 +77,4 @@ server.js
 supervisord.conf
 test.js
 -----------test.txt------------
-time: 10/3/2014 1:6
-address variable: 172.17.0.10
-port variable:27017
-port: tcp://172.17.0.10:22
-port_27017: tcp://172.17.0.10:27017
 
