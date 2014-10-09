@@ -8,6 +8,8 @@ var makeDate = function(timestamp){
     timestamp.getMinutes() + '\n';
 }
 
+// address and port are established in the db/index.js file
+
 var test = function(address, port){
 
 

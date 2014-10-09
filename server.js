@@ -3,8 +3,6 @@ var db = require('./db/index').db;
 var dbObj = require('./db/index');
 var express = require('express');
 
-var mytest = require('./test');
-mytest.test(dbObj.address, dbObj.port);
 
 var port = 5000;
 
