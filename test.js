@@ -8,7 +8,7 @@ var makeDate = function(timestamp){
     timestamp.getMinutes() + '\n';
 }
 
-var test = function(){
+var test = function(address, port){
 
 
   var timestamp = new Date();
@@ -16,6 +16,8 @@ var test = function(){
 
   fs.writeFile('test.txt', 
                'time: ' + readableDate + 
+               'address variable: ' + address + '\n' +
+               'port variable:' + port + '\n' +  
                'port: ' + process.env.MONGODB_PORT + '\n' +
                'port_27017: ' + process.env.MONGODB_PORT_27017_TCP + '\n',
                function(err){

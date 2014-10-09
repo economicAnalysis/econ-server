@@ -1,35 +1,14 @@
 -----------src/node-std*------------
 js-bson: Failed to load c++ bson extension, using pure JS version
-========================================================================================
-=  Please ensure that you set the default write concern for the database by setting    =
-=   one of the options                                                                 =
-=                                                                                      =
-=     w: (value of > -1 or the string 'majority'), where < 1 means                     =
-=        no write acknowledgement                                                       =
-=     journal: true/false, wait for flush to journal before acknowledgement             =
-=     fsync: true/false, wait for flush to file system before acknowledgement           =
-=                                                                                      =
-=  For backward compatibility safe is still supported and                              =
-=   allows values of [true | false | {j:true} | {w:n, wtimeout:n} | {fsync:true}]      =
-=   the default value is false which means the driver receives does not                =
-=   return the information of the success/error of the insert/update/remove            =
-=                                                                                      =
-=   ex: new Db(new Server('localhost', 27017), {safe:false})                           =
-=                                                                                      =
-=   http://www.mongodb.org/display/DOCS/getLastError+Command                           =
-=                                                                                      =
-=  The default of no acknowledgement will change in the very near future                =
-=                                                                                      =
-=  This message will disappear when the default safe is set on the driver Db           =
-========================================================================================
 test triggered
 null
+now listening on  5000
 -----------src/ls*------------
 Dockerfile
 README.md
-RESULT.log
 RESULTS.log
 app
+config.js
 db
 econapp_docker_rsa
 econapp_docker_rsa.pub
@@ -41,4 +20,10 @@ server
 server.js
 supervisord.conf
 test.js
+-----------test.txt------------
+time: 10/3/2014 1:6
+address variable: 172.17.0.10
+port variable:27017
+port: tcp://172.17.0.10:22
+port_27017: tcp://172.17.0.10:27017
 
