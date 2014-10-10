@@ -4,6 +4,10 @@ var dbServer = require('mongodb').Server;
 
 var address = process.env.MONGODB_PORT_27017_TCP_ADDR;
 var port = process.env.MONGODB_PORT_27017_TCP_PORT;
+
+address = address || 'localhost';
+port = port || 27017;
+
 // At this point we have not connected to mongo.
 // mongoclient is an object that describes the connection to mongo
 var db = new Db('economic_data', new dbServer(address, port), 
