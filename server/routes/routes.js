@@ -45,6 +45,10 @@ module.exports = function (server) {
   
   server.get('/', getData);
 
+  server.get('/test', function (response, request){
+    response.status(200).end('hello from the container');
+  });
+
   return server;
 
 };
