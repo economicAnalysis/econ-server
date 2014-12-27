@@ -30,3 +30,15 @@ the link command takes the form `--link name:alias`
 ```
 ssh root@localhost -p 50002 -i econapp_docker_rsa
 ```
+
+######linking to localhost
+
+The following code controls how the server in the container is mapped to the 
+host. When we're running on localhost the port, which is port 5000 in the 
+container, is mapped to the variable `port_db` on localhost. In the default
+`sample.yml` file the value for `port_db` is 50001. Hence, the app is available
+at url: http://localhost:50001
+
+```
+-p {{ port_db }}:5000
+```
